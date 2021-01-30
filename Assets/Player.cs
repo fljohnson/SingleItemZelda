@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static GameAction;
 
 public class Player : MonoBehaviour
 {
@@ -10,7 +11,7 @@ public class Player : MonoBehaviour
 		DYING,
 		GAME_OVER,
 	}
-	
+	public Central central;
 	public Vector3[] possibleOtherDirections = new Vector3[]{
 		new Vector3(0,0,1),  //0 degrees 
 		new Vector3(0,0,-1), //180 degrees
@@ -186,9 +187,19 @@ public class Player : MonoBehaviour
 			}
 			
 		}
-		if(collision.gameObject.tag == "Chest") {
+		if(ObjectHasTag(collision.gameObject, "Chest")) {
 			canStore = true;
 		}
+	}
+	
+	bool ObjectHasTag(GameObject g,string s) {
+		if(g == null) 
+			return false;
+		if(g.tag == s) 
+			return true;
+		if(g.transform.parent == null)
+			return false;
+		return g.transform.parent.tag == s;
 	}
 	
 	bool OnBridge(GameObject mayBeBridge) {
@@ -202,7 +213,7 @@ public class Player : MonoBehaviour
 			return false;
 		} 
 		//is the bridge over a hole?
-		return b.onHole;
+		return b.inUse;
 		
 	}
 	
@@ -211,7 +222,7 @@ public class Player : MonoBehaviour
 			potentialPickup = null; 
 		}
 		lastCollidedItem = null;
-		if(collision.gameObject.tag == "Chest") {
+		if(ObjectHasTag(collision.gameObject, "Chest")) {
 			canStore = false;
 		}
 	}
@@ -236,6 +247,7 @@ public class Player : MonoBehaviour
 				primaryItem = secondaryItem;
 				secondaryItem = temp;
 				
+				central.ActOnEvent(CHESTGETITEM);
 			}
 			else
 			{
@@ -249,13 +261,13 @@ public class Player : MonoBehaviour
 			Bridge b;
 			//grab it per OnCollisionEnter
 			//what constitutes "in reach"?
-			Vector3 myPos = transform.position;
+			Vector3 myPos = transform.position + new Vector3(0,1f,0);
 			//1.5 units directly in front of us
 			Vector3 probeDir = lastDirection;
-			probeDir.y = 0f;
+			probeDir.y = -1f;
 			RaycastHit whatHit;
 			
-			if(Physics.Raycast(myPos,probeDir,out whatHit, 3.5f)) { //hit something
+			if(Physics.Raycast(myPos,probeDir.normalized,out whatHit, 3.5f)) { //hit something
 				Debug.Log(whatHit.transform.tag);
 				if(whatHit.transform.tag == "Bridge") { //AHA!
 					potentialPickup = whatHit.transform.gameObject;
@@ -264,6 +276,9 @@ public class Player : MonoBehaviour
 						potentialPickup = null;
 					} 
 					else {
+						if(b.inUse) {
+							return; //call the (w)hole thing off
+						}
 						b.coveredHole = null; //we're removing it from the hole
 						b.inInventory = true;
 					}
@@ -279,6 +294,7 @@ public class Player : MonoBehaviour
 					lastCollidedItem = primaryItem;
 					b=primaryItem.GetComponent<Bridge>();
 					if(b != null) {
+						b.inUse =false;
 						b.inInventory = false;
 					}
 					 
@@ -288,6 +304,7 @@ public class Player : MonoBehaviour
 					potentialPickup.SetActive(false);
 					b=primaryItem.GetComponent<Bridge>();
 					if(b != null) {
+						b.inUse =false;
 						b.inInventory = true;
 					}
 				}
@@ -309,6 +326,7 @@ public class Player : MonoBehaviour
 			if(secondaryItem ==  null) {
 				secondaryItem = primaryItem;
 				primaryItem = null;
+				central.ActOnEvent(CHESTSTOREITEM);
 			}
 			else {
 				Debug.Log("Chest is full");
@@ -329,6 +347,7 @@ public class Player : MonoBehaviour
 			{
 				Bridge b = primaryItem.GetComponent<Bridge>();
 				if(b != null) {
+					b.inUse = true;
 					b.coveredHole = droppedOn;
 					b.inInventory = false;
 				}
