@@ -27,13 +27,15 @@ public class Player : MonoBehaviour
 	
 	private GameObject lastCollidedItem;
 	
+	 
+	
 	private bool moved = false;
 	
 	private Vector3 lastDirection = new Vector3(0f,0f,1f);
 	private Transform modelish;
 	
 	private float spinTime = -1f;
-	public static string[] itemTypes = {"Key","Lantern","Bridgelayer"};
+	public static string[] itemTypes = {"Key","Lantern","Bridge"};
     // Start is called before the first frame update
     void Start()
     {
@@ -158,7 +160,11 @@ public class Player : MonoBehaviour
 		if(collision.gameObject == lastCollidedItem) {
 			return;
 		}
+		if(OnBridge(collision.gameObject)) {
+			return;
+		}
 		if(IsItem(collision.gameObject.tag)) {
+			Bridge b; 
 			potentialPickup = collision.gameObject; 
 			
 			if(primaryItem != null) {
@@ -166,15 +172,38 @@ public class Player : MonoBehaviour
 				primaryItem.transform.position = coords;
 				primaryItem.SetActive(true);
 				lastCollidedItem = primaryItem;
+				b = primaryItem.GetComponent<Bridge>();
+				if(b != null) {
+					b.inInventory = false;
+				}
 				 
 			}
 			primaryItem = potentialPickup;
 			potentialPickup.SetActive(false);
+			b = primaryItem.GetComponent<Bridge>();
+			if(b != null) {
+				b.inInventory = true;
+			}
 			
 		}
 		if(collision.gameObject.tag == "Chest") {
 			canStore = true;
 		}
+	}
+	
+	bool OnBridge(GameObject mayBeBridge) {
+		//if it's not a bridge, forget it
+		if(mayBeBridge == null || mayBeBridge.tag !="Bridge") {
+			return false;
+		}
+		//screw-up-proofing
+		Bridge b = mayBeBridge.GetComponent<Bridge>();
+		if(b == null) {
+			return false;
+		} 
+		//is the bridge over a hole?
+		return b.onHole;
+		
 	}
 	
 	void OnCollisionExit(Collision collision) {
@@ -214,6 +243,57 @@ public class Player : MonoBehaviour
 			}
 			
 		}
+		else {
+			potentialPickup = null;
+			//if there is a Bridge in reach that is on a hole,
+			Bridge b;
+			//grab it per OnCollisionEnter
+			//what constitutes "in reach"?
+			Vector3 myPos = transform.position;
+			//1.5 units directly in front of us
+			Vector3 probeDir = lastDirection;
+			probeDir.y = 0f;
+			RaycastHit whatHit;
+			
+			if(Physics.Raycast(myPos,probeDir,out whatHit, 3.5f)) { //hit something
+				Debug.Log(whatHit.transform.tag);
+				if(whatHit.transform.tag == "Bridge") { //AHA!
+					potentialPickup = whatHit.transform.gameObject;
+					b=potentialPickup.GetComponent<Bridge>();
+					if(b == null) {
+						potentialPickup = null;
+					} 
+					else {
+						b.coveredHole = null; //we're removing it from the hole
+						b.inInventory = true;
+					}
+				}
+			}
+			
+			if(potentialPickup != null) 
+			{
+				if(primaryItem != null) {
+					Vector3 coords = potentialPickup.transform.position;
+					primaryItem.transform.position = coords;
+					primaryItem.SetActive(true);
+					lastCollidedItem = primaryItem;
+					b=primaryItem.GetComponent<Bridge>();
+					if(b != null) {
+						b.inInventory = false;
+					}
+					 
+				}
+				if(primaryItem == null) {
+					primaryItem = potentialPickup;
+					potentialPickup.SetActive(false);
+					b=primaryItem.GetComponent<Bridge>();
+					if(b != null) {
+						b.inInventory = true;
+					}
+				}
+				
+			}
+		}
 	}
 	void DropItem() {
 		if(primaryItem == null){
@@ -240,30 +320,42 @@ public class Player : MonoBehaviour
 				
 	}
 	
-	public void DropItemOn(Vector3 point) {
+	public void DropItemOn(Vector3 point, Hole droppedOn = null) {
+		
 		primaryItem.transform.position = point;
 		primaryItem.SetActive(true);
+		if(droppedOn != null) {
+			if(primaryItem.tag == "Bridge")
+			{
+				Bridge b = primaryItem.GetComponent<Bridge>();
+				if(b != null) {
+					b.coveredHole = droppedOn;
+					b.inInventory = false;
+				}
+			}
+		}
 		lastCollidedItem = null;
 		primaryItem = null;
 	} 
 	
 	Vector3 SafeDropPoint() {
+		float safeDistance = 2f;
 		//this attempts to find a non-trapping place to put the Item down
 		Vector3 myPos = transform.position;
-		//try 1.5 units directly in front of us
-		Vector3 motion = 1.5f*lastDirection;
+		//try safeDistance units directly in front of us
+		Vector3 motion = safeDistance*lastDirection;
 		motion.y = 0f;
 		
 		
 		
-		if(!Physics.Raycast(myPos,lastDirection,1.5f)) { //nothing in the way up front, so
+		if(!Physics.Raycast(myPos,lastDirection,safeDistance)) { //nothing in the way up front, so
 			return myPos+motion;
 		}
 		
 		//try behind us:
 		Vector3 otherDir = lastDirection*-1f;
-		if(!Physics.Raycast(myPos,otherDir,1.5f)) { //nothing in the way up front, so
-			motion = 1.5f*otherDir;
+		if(!Physics.Raycast(myPos,otherDir,safeDistance)) { //nothing in the way up front, so
+			motion = safeDistance*otherDir;
 			motion.y = 0f;
 			return myPos+motion;
 		}
@@ -273,15 +365,15 @@ public class Player : MonoBehaviour
 		otherDir.x= lastDirection.z;
 		otherDir.z= lastDirection.x;
 		
-		if(!Physics.Raycast(myPos,otherDir,1.5f)) { //nothing in the way up front, so
-			motion = 1.5f*otherDir;
+		if(!Physics.Raycast(myPos,otherDir,safeDistance)) { //nothing in the way up front, so
+			motion = safeDistance*otherDir;
 			motion.y = 0f;
 			return myPos+motion;
 		}
 		
 		//guess that leaves the right
 		otherDir = -1f*otherDir;
-		motion = 1.5f*otherDir;
+		motion = safeDistance*otherDir;
 		motion.y = 0f;
 			
 		return myPos+motion;

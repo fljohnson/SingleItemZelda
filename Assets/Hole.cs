@@ -26,8 +26,12 @@ public class Hole : MonoBehaviour
 		if(player == null)
 			return;
 		if(player.HasItem("Bridge")) {
-			GetComponent<Collider>().enabled = false;
-			player.DropItemOn(transform.position);
+			MakePassable(true);
+			player.DropItemOn(transform.position,this);//goose the y
 		}
+	}
+	
+	public void MakePassable(bool passable) {		
+		GetComponent<Collider>().enabled = !passable;
 	}
 }

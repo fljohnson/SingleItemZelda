@@ -8,7 +8,7 @@ TagManager:
   - Key
   - Lantern
   - Chest
-  - Bridgelayer
+  - Bridge
   layers:
   - Default
   - TransparentFX
