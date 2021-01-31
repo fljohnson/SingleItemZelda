@@ -48,7 +48,7 @@ public class Bridge : MonoBehaviour
     
 	
 	
-    void OnCollisionEnter(Collision collision) {
+    void NOtOnCollisionEnter(Collision collision) {
 		if(collision.gameObject.tag == "Player") {
 			Debug.Log("BRIDGE touched "+ primed.ToString());
 			inUse = (onHole);
@@ -88,7 +88,7 @@ public class Bridge : MonoBehaviour
 	
 	
 	
-	void OnCollisionExit(Collision collision) {
+	void NotOnCollisionExit(Collision collision) {
 		if(collision.gameObject.tag == "Player") {
 			Debug.Log("BRIDGE left "+ primed.ToString());
 	

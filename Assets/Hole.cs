@@ -16,11 +16,12 @@ public class Hole : MonoBehaviour
     {
         
     }
-        
+      
+    /*    
 	void OnCollisionEnter(Collision collision) {
 		CheckForPlayerItem(collision.gameObject);
 		
-	}
+	}*/
 	
 	void CheckForPlayerItem(GameObject mightBe) {
 		Player player = mightBe.GetComponent<Player>();

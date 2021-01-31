@@ -200,10 +200,12 @@ public class Player : MonoBehaviour
 
 
 		if(Input.GetKeyDown("q")){
-			PickUpItem();
+			//LayBridge();
+			//PickUpItem();
 		}
 		if(Input.GetKeyDown("e")){
-			DropItem();
+			//RetrieveBridge();
+			//DropItem();
 		}
 
 
@@ -226,7 +228,16 @@ public class Player : MonoBehaviour
 	void OnCollisionEnter(Collision collision) {
 		
 		if(ObjectHasTag(collision.gameObject, "Chest")) {
-			canStore = true;
+			//automatic swap what's on hand with what's stored (FLJ, 1/31/2021)
+			if(HasItem("Lantern")) 
+				central.ActOnEvent(OFFLANTERN);
+			GameObject temp = primaryItem;
+			primaryItem = secondaryItem;
+			secondaryItem = temp;
+			central.ActOnEvent(CHESTSTOREITEM);
+			if(HasItem("Lantern")) 
+				central.ActOnEvent(LITLANTERN);
+			//canStore = true;
 		}
 	}
 	void OnTriggerEnter(Collider collision) {
