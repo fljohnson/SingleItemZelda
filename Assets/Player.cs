@@ -221,6 +221,13 @@ public class Player : MonoBehaviour
 		}
 	}
 	
+	//This is only here to allow for the Chest (FLJ, 1/31/2021)
+	void OnCollisionEnter(Collision collision) {
+		
+		if(ObjectHasTag(collision.gameObject, "Chest")) {
+			canStore = true;
+		}
+	}
 	void OnTriggerEnter(Collider collision) {
 		//prevent ping-ponging between carried and picked-up items
 		if(collision.gameObject == lastCollidedItem) {
@@ -257,16 +264,9 @@ public class Player : MonoBehaviour
 			if(ObjectHasTag(primaryItem,"Lantern")) {
 				primaryItem.GetComponent<Lantern>().SetLit(true); 
 			}
-		}		
+		}
 	}
-
-    private void OnCollisionEnter(Collision collision)
-    {
-        if (ObjectHasTag(collision.gameObject, "Chest"))
-        {
-            canStore = true;
-        }
-    }
+ 
 
     bool ObjectHasTag(GameObject g,string s) {
 		if(g == null) 
