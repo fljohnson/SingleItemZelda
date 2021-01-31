@@ -15,12 +15,6 @@ public class Room : MonoBehaviour
     {
 		//this is not always guaranteed to be called (2019.4.11f1)
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
     
     public void MoveCamera() {
 		/*
@@ -30,9 +24,9 @@ public class Room : MonoBehaviour
 		
 		if(player == null ) 
 			player = GameObject.FindWithTag("Player").GetComponent<Player>();
-			
-		Camera.main.transform.position = cameraPosition;
-		Camera.main.transform.eulerAngles = cameraOrientationDegrees;
+
+        CameraManager.Instance.ChangeCamera(cameraPosition);
+        Camera.main.transform.eulerAngles = cameraOrientationDegrees;
 		player.WarpToNextRoom();
 	}
 }
