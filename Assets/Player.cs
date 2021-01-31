@@ -294,6 +294,13 @@ public class Player : MonoBehaviour
 		}
 	}
 	
+
+    public void ThrowOutItem()
+    {
+        primaryItem = null;
+    }
+
+
 	public bool HasItem(string itemType) {
 		if(primaryItem == null)
 			return false;

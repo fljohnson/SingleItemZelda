@@ -4,18 +4,6 @@ using UnityEngine;
 
 public class Door : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-    
     //It seemed simple to do the key check in the Door
     void OnCollisionEnter(Collision collision) {
 		CheckForPlayerKey(collision.gameObject);
@@ -27,8 +15,9 @@ public class Door : MonoBehaviour
 		if(player == null)
 			return;
 		if(player.HasItem("Key")) {
-			//for now, ditch this door
-			Destroy(gameObject);
+            //for now, ditch this door'
+            player.ThrowOutItem();
+            Destroy(gameObject);
 			//GetComponent<Collider>().enabled = false;
 		}
 	}
