@@ -113,7 +113,6 @@ public class Player : MonoBehaviour
 		float yRot = 360f;
 		bool changed = false;
 
-        print(motion.x + ",  " + motion.y + " and " + moveHorizontal + moveVertical);
 
         if(moveHorizontal == 0 && moveVertical > 0)
         {
@@ -258,13 +257,18 @@ public class Player : MonoBehaviour
 			if(ObjectHasTag(primaryItem,"Lantern")) {
 				primaryItem.GetComponent<Lantern>().SetLit(true); 
 			}
-		}
-		if(ObjectHasTag(collision.gameObject, "Chest")) {
-			canStore = true;
-		}
+		}		
 	}
-	
-	bool ObjectHasTag(GameObject g,string s) {
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (ObjectHasTag(collision.gameObject, "Chest"))
+        {
+            canStore = true;
+        }
+    }
+
+    bool ObjectHasTag(GameObject g,string s) {
 		if(g == null) 
 			return false;
 		if(g.tag == s) 
