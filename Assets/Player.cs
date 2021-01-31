@@ -397,4 +397,8 @@ public class Player : MonoBehaviour
 			
 		return myPos+motion;
 	}
+	
+	public void WarpToNextRoom() {
+		transform.position+=lastDirection*3f*step;
+	}
 }

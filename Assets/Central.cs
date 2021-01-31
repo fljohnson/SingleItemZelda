@@ -10,12 +10,12 @@ public class Central : MonoBehaviour
 	public AudioClip chestItemGet;
 	public AudioClip chestItemStore;
 	
-	private static GameObject playerObject;
+	private static GameObject whereToPlay;
     // Start is called before the first frame update
     void Start()
     {
-        if(playerObject == null) {
-			playerObject = GameObject.FindWithTag("Player");
+        if(whereToPlay == null) {
+			whereToPlay = GameObject.FindWithTag("MainCamera");
 		}
     }
 
@@ -28,11 +28,11 @@ public class Central : MonoBehaviour
     public void ActOnEvent(GameAction a) {
 		switch(a) {
 			case CHESTGETITEM:
-				AudioSource.PlayClipAtPoint(chestItemGet, playerObject.transform.position,volume);
+				AudioSource.PlayClipAtPoint(chestItemGet, whereToPlay.transform.position,volume);
 				break;
 			
 			case CHESTSTOREITEM:
-				AudioSource.PlayClipAtPoint(chestItemStore, playerObject.transform.position,volume);
+				AudioSource.PlayClipAtPoint(chestItemStore, whereToPlay.transform.position,volume);
 				break;
 			default:
 			break;
