@@ -489,11 +489,9 @@ public class Player : MonoBehaviour
 
     private IEnumerator StepAnimation()
     {
-        print("going B)");
         yield return new WaitForSeconds(0.2f);
         if (moved)
         {
-            print("I moved");
         playerModel.transform.localScale = new Vector3(-playerModel.transform.localScale.x, playerModel.transform.localScale.y, playerModel.transform.localScale.z);
         }
         StartCoroutine(StepAnimation());
