@@ -5,6 +5,9 @@ using UnityEngine;
 public class Hole : MonoBehaviour
 {
 	Vector3 goosing = new Vector3(0f,0.16f,0f);
+	public Material clearHole;
+	public Material blackHole;
+	
     // Start is called before the first frame update
     void Start()
     {
@@ -35,5 +38,6 @@ public class Hole : MonoBehaviour
 	
 	public void MakePassable(bool passable) {		
 		GetComponent<Collider>().enabled = !passable;
+		GetComponentInChildren<Renderer>().material = passable ? clearHole : blackHole;
 	}
 }

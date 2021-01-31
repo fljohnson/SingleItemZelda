@@ -21,6 +21,11 @@ public class Bridge : MonoBehaviour
 				_coveredHole = value;
 				
 		}
+		
+		get {
+			return (_coveredHole);
+		}
+			
 	}
 		
 	public bool onHole {
