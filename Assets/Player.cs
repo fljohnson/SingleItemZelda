@@ -113,7 +113,7 @@ public class Player : MonoBehaviour
 		float yRot = 360f;
 		bool changed = false;
 
-        print(motion.x + ",  " + motion.y + " and " + moveHorizontal + moveVertical);
+        //print(motion.x + ",  " + motion.y + " and " + moveHorizontal + moveVertical);
 
         if(moveHorizontal == 0 && moveVertical > 0)
         {
@@ -222,6 +222,13 @@ public class Player : MonoBehaviour
 		}
 	}
 	
+	//This is only here to allow for the Chest (FLJ, 1/31/2021)
+	void OnCollisionEnter(Collision collision) {
+		
+		if(ObjectHasTag(collision.gameObject, "Chest")) {
+			canStore = true;
+		}
+	}
 	void OnTriggerEnter(Collider collision) {
 		//prevent ping-ponging between carried and picked-up items
 		if(collision.gameObject == lastCollidedItem) {
@@ -258,9 +265,6 @@ public class Player : MonoBehaviour
 			if(ObjectHasTag(primaryItem,"Lantern")) {
 				primaryItem.GetComponent<Lantern>().SetLit(true); 
 			}
-		}
-		if(ObjectHasTag(collision.gameObject, "Chest")) {
-			canStore = true;
 		}
 	}
 	
