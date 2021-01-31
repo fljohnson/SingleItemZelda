@@ -376,6 +376,7 @@ MonoBehaviour:
   hitPoints: 1
   primaryItem: {fileID: 0}
   secondaryItem: {fileID: 0}
+  playerModel: {fileID: 1190834802}
 --- !u!136 &202541439
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -1557,6 +1558,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: bd2c29bbf07c8c5caa89aa074fb1b738, type: 3}
+--- !u!1 &1190834802 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8164078558771037576, guid: 7e7d62759f43af5808b34df6947a16c2,
+    type: 3}
+  m_PrefabInstance: {fileID: 202541436}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1202264091
 PrefabInstance:
   m_ObjectHideFlags: 0
