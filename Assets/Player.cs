@@ -27,7 +27,8 @@ public class Player : MonoBehaviour
 	private GameObject potentialPickup;
 	
 	private GameObject lastCollidedItem;
-	
+
+    public GameObject playerModel;
 	 
 	
 	private bool moved = false;
@@ -41,6 +42,7 @@ public class Player : MonoBehaviour
     void Start()
     {
         modelish=transform.Find("default");
+        StartCoroutine(StepAnimation());
     }
 
     // Update is called once per frame
@@ -59,6 +61,7 @@ public class Player : MonoBehaviour
 		}
     }
     
+    
     //Have we moved since the last time anyone asked?
     //this means we won't be recalculating paths every darned frame - see Gremlin.cs for a caller
     public bool DidMove() {
@@ -67,6 +70,7 @@ public class Player : MonoBehaviour
 		return rv;
 	}
 	
+
 	public void Zap(int damage = 1) {
 		hitPoints -= damage;
 		if(hitPoints <= 0) {
@@ -111,8 +115,6 @@ public class Player : MonoBehaviour
 
         Vector3 motion=Vector3.zero;
 		float yRot = 360f;
-		bool changed = false;
-
 
         if(moveHorizontal == 0 && moveVertical > 0)
         {
@@ -165,11 +167,11 @@ public class Player : MonoBehaviour
         }
         if (moveHorizontal != 0 || moveVertical != 0)
         {
-            changed = true;
+            moved = true;
         }
         else
         {
-            changed = false;
+            moved = false;
         }
 
 
@@ -178,26 +180,7 @@ public class Player : MonoBehaviour
         motion.z = step * moveVertical * actualSpeed;
 
 
-
-        if (Input.GetKeyDown("w")){
-			//motion.z+=step;
-			moved = true;
-		}
-		if(Input.GetKeyDown("s")){
-			//motion.z-=step;
-			moved = true;
-		}
-		if(Input.GetKeyDown("d")){
-			//motion.x+=step;
-			moved = true;
-		}
-		if(Input.GetKeyDown("a")){
-			//motion.x-=step;
-			moved = true;
-		}
-        
-
-
+            
 		if(Input.GetKeyDown("q")){
 			RetrieveBridge();
 			//PickUpItem();
@@ -207,9 +190,6 @@ public class Player : MonoBehaviour
 			//DropItem();
 		}
 
-
-
-		//if(changed) {
 			GetComponent<Rigidbody>().velocity=motion;
 			if(motion.x != 0f || motion.z != 0f) {
 				lastDirection = motion.normalized;
@@ -567,4 +547,14 @@ public class Player : MonoBehaviour
 	public void WarpToNextRoom() {
 		transform.position+=lastDirection*3f;
 	}
+
+    private IEnumerator StepAnimation()
+    {
+        yield return new WaitForSeconds(0.2f);
+        if (moved)
+        {
+        playerModel.transform.localScale = new Vector3(-playerModel.transform.localScale.x, playerModel.transform.localScale.y, playerModel.transform.localScale.z);
+        }
+        StartCoroutine(StepAnimation());
+    }
 }
