@@ -177,6 +177,10 @@ public class Player : MonoBehaviour
 				if(b != null) {
 					b.inInventory = false;
 				}
+				if(ObjectHasTag(primaryItem,"Lantern")) {
+					primaryItem.GetComponent<Lantern>().SetLit(false); 
+				}
+				
 				 
 			}
 			primaryItem = potentialPickup;
@@ -185,7 +189,9 @@ public class Player : MonoBehaviour
 			if(b != null) {
 				b.inInventory = true;
 			}
-			
+			if(ObjectHasTag(primaryItem,"Lantern")) {
+				primaryItem.GetComponent<Lantern>().SetLit(true); 
+			}
 		}
 		if(ObjectHasTag(collision.gameObject, "Chest")) {
 			canStore = true;
@@ -291,6 +297,9 @@ public class Player : MonoBehaviour
 					Vector3 coords = potentialPickup.transform.position;
 					primaryItem.transform.position = coords;
 					primaryItem.SetActive(true);
+					if(ObjectHasTag(primaryItem,"Lantern")) {
+						primaryItem.GetComponent<Lantern>().SetLit(false); 
+					}
 					lastCollidedItem = primaryItem;
 					b=primaryItem.GetComponent<Bridge>();
 					if(b != null) {
@@ -330,6 +339,10 @@ public class Player : MonoBehaviour
 		{
 			if(secondaryItem ==  null) {
 				secondaryItem = primaryItem;
+				if(ObjectHasTag(primaryItem,"Lantern")) {
+					primaryItem.GetComponent<Lantern>().SetLit(false); 
+				}
+
 				primaryItem = null;
 				central.ActOnEvent(CHESTSTOREITEM);
 			}
@@ -357,6 +370,9 @@ public class Player : MonoBehaviour
 					b.inInventory = false;
 				}
 			}
+		}
+		if(ObjectHasTag(primaryItem,"Lantern")) {
+			primaryItem.GetComponent<Lantern>().SetLit(false); 
 		}
 		lastCollidedItem = null;
 		primaryItem = null;
