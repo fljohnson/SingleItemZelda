@@ -113,7 +113,6 @@ public class Player : MonoBehaviour
 		float yRot = 360f;
 		bool changed = false;
 
-        //print(motion.x + ",  " + motion.y + " and " + moveHorizontal + moveVertical);
 
         if(moveHorizontal == 0 && moveVertical > 0)
         {
@@ -278,8 +277,9 @@ public class Player : MonoBehaviour
 			}
 		}
 	}
-	
-	bool ObjectHasTag(GameObject g,string s) {
+ 
+
+    bool ObjectHasTag(GameObject g,string s) {
 		if(g == null) 
 			return false;
 		if(g.tag == s) 
