@@ -219,7 +219,7 @@ public class Player : MonoBehaviour
 			return false;
 		} 
 		//is the bridge over a hole?
-		return b.inUse;
+		return b.onHole;
 		
 	}
 	
@@ -273,8 +273,11 @@ public class Player : MonoBehaviour
 			probeDir.y = -1f;
 			RaycastHit whatHit;
 			
-			if(Physics.Raycast(myPos,probeDir.normalized,out whatHit, 3.5f)) { //hit something
-				Debug.Log(whatHit.transform.tag);
+			int layerMask = (1<<12);
+			layerMask = ~layerMask; //everything but the floor layer
+			
+			if(Physics.Raycast(myPos,probeDir.normalized,out whatHit, 3.5f, layerMask)) { //hit something
+				Debug.Log(whatHit.transform.name);
 				if(whatHit.transform.tag == "Bridge") { //AHA!
 					potentialPickup = whatHit.transform.gameObject;
 					b=potentialPickup.GetComponent<Bridge>();

@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Hole : MonoBehaviour
 {
+	Vector3 goosing = new Vector3(0f,0.16f,0f);
     // Start is called before the first frame update
     void Start()
     {
@@ -27,7 +28,7 @@ public class Hole : MonoBehaviour
 			return;
 		if(player.HasItem("Bridge")) {
 			MakePassable(true);
-			player.DropItemOn(transform.position,this);//goose the y
+			player.DropItemOn(transform.position+goosing,this);//goose the y
 		}
 	}
 	
