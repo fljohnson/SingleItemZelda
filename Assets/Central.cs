@@ -9,6 +9,8 @@ public class Central : MonoBehaviour
 	public float volume = 1.0f;
 	public AudioClip chestItemGet;
 	public AudioClip chestItemStore;
+	public AudioClip lanternIgnite;
+	public AudioClip lanternContinue;
 	
 	private static GameObject whereToPlay;
     // Start is called before the first frame update
@@ -33,6 +35,9 @@ public class Central : MonoBehaviour
 			
 			case CHESTSTOREITEM:
 				AudioSource.PlayClipAtPoint(chestItemStore, whereToPlay.transform.position,volume);
+				break;
+			case LITLANTERN:
+				AudioSource.PlayClipAtPoint(lanternIgnite, whereToPlay.transform.position, volume);
 				break;
 			default:
 			break;

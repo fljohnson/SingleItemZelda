@@ -24,8 +24,10 @@ public class Room : MonoBehaviour
     }
     
     public void MoveCamera() {
+		/*
 		Debug.Log("New room:Move camera to "+cameraPosition.ToString("F2"));
 		Debug.Log("Its pitch,yaw, and roll "+cameraOrientationDegrees.ToString("F2"));
+		*/
 		Camera.main.transform.position = cameraPosition;
 		Camera.main.transform.eulerAngles = cameraOrientationDegrees;
 		player.WarpToNextRoom();

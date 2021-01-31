@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static GameAction;
 
 public class Lantern : MonoBehaviour
 {
@@ -21,11 +22,29 @@ public class Lantern : MonoBehaviour
     
     public void SetLit(bool isLit) {
 		if(!lit) {
-			Ignite();
+			if(isLit) 
+				Ignite();
+		}
+		else {
+			if(!isLit)
+				Douse();
 		}
 	}
 	
 	void Ignite() {
+		if(central == null) {
+			central = GameObject.Find("Central").GetComponent<Central>();
+		}
+		central.ActOnEvent(LITLANTERN);
+		lit = true;
+	}
+	
+	void Douse() {
+		if(central == null) {
+			central = GameObject.Find("Central").GetComponent<Central>();
+		}
+		central.ActOnEvent(OFFLANTERN);
+		lit = false;
 	}
 	
 }
