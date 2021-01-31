@@ -199,11 +199,11 @@ public class Player : MonoBehaviour
 
 
 		if(Input.GetKeyDown("q")){
-			//LayBridge();
+			RetrieveBridge();
 			//PickUpItem();
 		}
 		if(Input.GetKeyDown("e")){
-			//RetrieveBridge();
+			LayBridge();
 			//DropItem();
 		}
 
@@ -221,6 +221,67 @@ public class Player : MonoBehaviour
 				modelish.transform.eulerAngles = properAngles;
 			}
 		}
+	}
+	
+	void LayBridge() {
+		if(!HasItem("Bridge")) 
+			return;
+		//is there a Hole directly in front of us?
+		int layerMask = 1<< 13 ; //the Holes Layer
+		RaycastHit hitInfo;
+		if(!Physics.Raycast(transform.position,lastDirection,out hitInfo, step,layerMask))
+			return;
+			
+		//Okay: find and communicate with that sucker
+		Hole h = hitInfo.transform.GetComponent<Hole>();
+		h.MakePassable(true);
+		DropItemOn(hitInfo.transform.position,h);
+		
+	}
+	
+	void RetrieveBridge() {
+		//Is there a Bridge ahead of us?
+		Vector3 origin = transform.position+lastDirection*0.8f; //half a suqare forward
+		RaycastHit hitInfo;
+		if(!Physics.Raycast(origin,Vector3.down,out hitInfo, 5f))
+		{
+			return;
+		}
+		Bridge b =  hitInfo.transform.GetComponent<Bridge>();
+		if(b == null) {
+			return;
+		}
+		if(b.coveredHole != null) {
+			Hole h = b.coveredHole;
+			potentialPickup = hitInfo.transform.gameObject; 
+			
+			if(primaryItem != null) {
+				Vector3 coords = potentialPickup.transform.position;
+				primaryItem.transform.position = coords;
+				primaryItem.SetActive(true);
+				lastCollidedItem = primaryItem;
+				b = primaryItem.GetComponent<Bridge>();
+				if(b != null) {
+					b.inInventory = false;
+				}
+				if(ObjectHasTag(primaryItem,"Lantern")) {
+					primaryItem.GetComponent<Lantern>().SetLit(false); 
+				}
+				
+				 
+			}
+			primaryItem = potentialPickup;
+			potentialPickup.SetActive(false);
+			b = primaryItem.GetComponent<Bridge>();
+			if(b != null) {
+				b.inInventory = true;
+			}
+			if(ObjectHasTag(primaryItem,"Lantern")) {
+				primaryItem.GetComponent<Lantern>().SetLit(true); 
+			}
+			h.MakePassable(false);
+		}
+		
 	}
 	
 	//This is only here to allow for the Chest (FLJ, 1/31/2021)
