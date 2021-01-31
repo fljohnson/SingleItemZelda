@@ -311,6 +311,10 @@ public class Player : MonoBehaviour
 				
 			}
 		}
+		
+		if(primaryItem != null && HasItem("Lantern")) {
+			primaryItem.GetComponent<Lantern>().SetLit(true); 
+		}
 	}
 	void DropItem() {
 		if(primaryItem == null){

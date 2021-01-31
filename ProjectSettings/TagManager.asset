@@ -9,6 +9,7 @@ TagManager:
   - Lantern
   - Chest
   - Bridge
+  - Treasure
   layers:
   - Default
   - TransparentFX
