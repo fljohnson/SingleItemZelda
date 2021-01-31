@@ -312,7 +312,8 @@ public class Player : MonoBehaviour
 			}
 		}
 		
-		if(primaryItem != null && HasItem("Lantern")) {
+		
+		if(ObjectHasTag(primaryItem,"Lantern")) {
 			primaryItem.GetComponent<Lantern>().SetLit(true); 
 		}
 	}
