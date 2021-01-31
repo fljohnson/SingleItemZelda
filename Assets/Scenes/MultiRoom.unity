@@ -739,7 +739,7 @@ PrefabInstance:
     - target: {fileID: 7410838062164340131, guid: c841e8129320458449133f989f9ae456,
         type: 3}
       propertyPath: cameraPosition.x
-      value: 24.75
+      value: -0.85
       objectReference: {fileID: 0}
     - target: {fileID: 7410838062164340131, guid: c841e8129320458449133f989f9ae456,
         type: 3}
@@ -749,7 +749,7 @@ PrefabInstance:
     - target: {fileID: 7410838062164340131, guid: c841e8129320458449133f989f9ae456,
         type: 3}
       propertyPath: cameraPosition.z
-      value: 25.39
+      value: 60.59
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c841e8129320458449133f989f9ae456, type: 3}
@@ -930,7 +930,7 @@ PrefabInstance:
     - target: {fileID: 7410838062164340131, guid: c841e8129320458449133f989f9ae456,
         type: 3}
       propertyPath: cameraPosition.x
-      value: 50.35
+      value: 24.75
       objectReference: {fileID: 0}
     - target: {fileID: 7410838062164340131, guid: c841e8129320458449133f989f9ae456,
         type: 3}
@@ -940,7 +940,7 @@ PrefabInstance:
     - target: {fileID: 7410838062164340131, guid: c841e8129320458449133f989f9ae456,
         type: 3}
       propertyPath: cameraPosition.z
-      value: 42.99
+      value: 25.39
       objectReference: {fileID: 0}
     - target: {fileID: 7796317577884493357, guid: c841e8129320458449133f989f9ae456,
         type: 3}
@@ -1024,7 +1024,7 @@ PrefabInstance:
     - target: {fileID: 7410838062164340131, guid: c841e8129320458449133f989f9ae456,
         type: 3}
       propertyPath: cameraPosition.x
-      value: 24.75
+      value: 50.35
       objectReference: {fileID: 0}
     - target: {fileID: 7410838062164340131, guid: c841e8129320458449133f989f9ae456,
         type: 3}
@@ -1187,7 +1187,7 @@ PrefabInstance:
     - target: {fileID: 7410838062164340131, guid: c841e8129320458449133f989f9ae456,
         type: 3}
       propertyPath: cameraPosition.x
-      value: -0.85
+      value: 24.75
       objectReference: {fileID: 0}
     - target: {fileID: 7410838062164340131, guid: c841e8129320458449133f989f9ae456,
         type: 3}
@@ -1197,7 +1197,7 @@ PrefabInstance:
     - target: {fileID: 7410838062164340131, guid: c841e8129320458449133f989f9ae456,
         type: 3}
       propertyPath: cameraPosition.z
-      value: 7.79
+      value: 42.99
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c841e8129320458449133f989f9ae456, type: 3}
