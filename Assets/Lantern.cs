@@ -5,6 +5,7 @@ using UnityEngine;
 public class Lantern : MonoBehaviour
 {
 	private bool lit = false;
+	private Central central;
 	
     // Start is called before the first frame update
     void Start()
@@ -18,7 +19,13 @@ public class Lantern : MonoBehaviour
         
     }
     
-    public void SetLit(boolean isLit) {
+    public void SetLit(bool isLit) {
+		if(!lit) {
+			Ignite();
+		}
+	}
+	
+	void Ignite() {
 	}
 	
 }
