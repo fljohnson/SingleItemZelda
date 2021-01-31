@@ -100,53 +100,119 @@ public class Player : MonoBehaviour
 		return Array.IndexOf(itemTypes,tag) > -1;
 	}
 	
-    void CheckInput() {
-		Vector3 motion=Vector3.zero;
+    void CheckInput() {       
+
+        //for movement
+        float moveHorizontal = Mathf.Round(Input.GetAxis("Horizontal"));
+        float moveVertical = Mathf.Round(Input.GetAxis("Vertical"));
+
+        //this variable makes the player move slower at angles so that they match vertical and horizontal speed.
+        float actualSpeed = 1;
+
+        Vector3 motion=Vector3.zero;
 		float yRot = 360f;
 		bool changed = false;
-		if(Input.GetKeyDown("w")){
-			motion.z+=step;
-			yRot=0f;
-			changed = true;
+
+        print(motion.x + ",  " + motion.y + " and " + moveHorizontal + moveVertical);
+
+        if(moveHorizontal == 0 && moveVertical > 0)
+        {
+            //move up
+            yRot = 0f;
+            actualSpeed = 1;
+        }
+        if (moveHorizontal == 0 && moveVertical < 0)
+        {
+            //Move down
+            yRot = 180f;
+            actualSpeed = 1;
+        }
+        if (moveHorizontal > 0 && moveVertical == 0)
+        {
+            //Move right
+            yRot = 90f;
+            actualSpeed = 1;
+        }
+        if (moveHorizontal < 0 && moveVertical == 0)
+        {
+            //Move left
+            yRot = -90f;
+            actualSpeed = 1;
+        }
+
+        if (moveHorizontal < 0 && moveVertical > 0)
+        {
+            //Move northwest
+            yRot = -45f;
+            actualSpeed = 0.75f;
+        }
+        if (moveHorizontal > 0 && moveVertical > 0)
+        {
+            //Move northeast
+            yRot = 45f;
+            actualSpeed = 0.75f;
+        }
+        if (moveHorizontal < 0 && moveVertical < 0)
+        {
+            //move southwest
+            yRot = 225f;
+            actualSpeed = 0.75f;
+        }
+        if (moveHorizontal > 0 && moveVertical < 0)
+        {
+            //Move southeast
+            yRot = 135f;
+            actualSpeed = 0.75f;
+        }
+        if (moveHorizontal != 0 || moveVertical != 0)
+        {
+            changed = true;
+        }
+        else
+        {
+            changed = false;
+        }
+
+
+        //actually move the player.
+        motion.x = step * moveHorizontal * actualSpeed;
+        motion.z = step * moveVertical * actualSpeed;
+
+
+
+        if (Input.GetKeyDown("w")){
+			//motion.z+=step;
 			moved = true;
 		}
 		if(Input.GetKeyDown("s")){
-			motion.z-=step;
-			changed = true;
-			yRot =180f;
+			//motion.z-=step;
 			moved = true;
 		}
 		if(Input.GetKeyDown("d")){
-			motion.x+=step;
-			changed = true;
-			yRot = 90f;
+			//motion.x+=step;
 			moved = true;
 		}
 		if(Input.GetKeyDown("a")){
-			motion.x-=step;
-			yRot = -90f;
-			changed = true;
+			//motion.x-=step;
 			moved = true;
 		}
-		if(Input.GetKeyUp("a") || Input.GetKeyUp("d") ) {
-			motion.x = 0f;
-			changed = true;
-		}
-		if(Input.GetKeyUp("w") || Input.GetKeyUp("s") ) {
-			motion.z = 0f;
-			changed = true;
-		}
+        
+
+
 		if(Input.GetKeyDown("q")){
 			PickUpItem();
 		}
 		if(Input.GetKeyDown("e")){
 			DropItem();
 		}
-		if(changed) {
+
+
+
+		//if(changed) {
 			GetComponent<Rigidbody>().velocity=motion;
 			if(motion.x != 0f || motion.z != 0f) {
 				lastDirection = motion.normalized;
-			}
+			//}
 			if(yRot < 360f) 
 			{
 				Vector3 properAngles = modelish.transform.eulerAngles;
@@ -156,7 +222,7 @@ public class Player : MonoBehaviour
 		}
 	}
 	
-	void OnCollisionEnter(Collision collision) {
+	void OnTriggerEnter(Collider collision) {
 		//prevent ping-ponging between carried and picked-up items
 		if(collision.gameObject == lastCollidedItem) {
 			return;
@@ -420,6 +486,6 @@ public class Player : MonoBehaviour
 	}
 	
 	public void WarpToNextRoom() {
-		transform.position+=lastDirection*3f*step;
+		transform.position+=lastDirection*3f;
 	}
 }
