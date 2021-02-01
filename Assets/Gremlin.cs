@@ -30,6 +30,8 @@ public class Gremlin : MonoBehaviour
         if(player == null) {
 			player = GameObject.FindWithTag("Player").GetComponent<Player>();
 		}
+        StartCoroutine(StepAnimation());
+
     }
 
     // Update is called once per frame
@@ -172,4 +174,13 @@ public class Gremlin : MonoBehaviour
 		}
 		processingHit = false;
 	}
+
+    private IEnumerator StepAnimation()
+    {
+        yield return new WaitForSeconds(0.2f);
+        
+            transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y, transform.localScale.z);
+        
+        StartCoroutine(StepAnimation());
+    }
 }

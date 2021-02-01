@@ -4,10 +4,12 @@ using UnityEngine;
 
 public class Door : MonoBehaviour
 {
+    public GameObject explosion;
+
     //It seemed simple to do the key check in the Door
-    void OnCollisionEnter(Collision collision) {
-		CheckForPlayerKey(collision.gameObject);
-		
+    void OnCollisionEnter(Collision collision)
+    {
+		CheckForPlayerKey(collision.gameObject);		
 	}
 	
 	void CheckForPlayerKey(GameObject mightBe) {
@@ -17,6 +19,7 @@ public class Door : MonoBehaviour
 		if(player.HasItem("Key")) {
             //for now, ditch this door'
             player.ThrowOutItem();
+            Instantiate(explosion, this.transform.position, Quaternion.identity);
             Destroy(gameObject);
 			//GetComponent<Collider>().enabled = false;
 		}
