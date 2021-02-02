@@ -285,7 +285,7 @@ public class Player : MonoBehaviour
                 central.ActOnEvent(LITLANTERN);
             //canStore = true;
         }
-        if (ObjectHasTag(collision.gameObject, "EndGame") && primaryItem.tag == "Treasure")
+        if (ObjectHasTag(collision.gameObject, "EndGame") && primaryItem != null && primaryItem.tag == "Treasure")
         {
             SceneManager.LoadScene("VictoryScreen", LoadSceneMode.Additive);
         }
@@ -570,6 +570,8 @@ public class Player : MonoBehaviour
         yield return new WaitForSeconds(0.2f);
         if (moved)
         {
+			if(playerModel == null) 
+				yield break;
             playerModel.transform.localScale = new Vector3(-playerModel.transform.localScale.x, playerModel.transform.localScale.y, playerModel.transform.localScale.z);
         }
         StartCoroutine(StepAnimation());
