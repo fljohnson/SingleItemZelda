@@ -8,7 +8,8 @@ using UnityEngine.SceneManagement;
 
 public class Player : MonoBehaviour
 {
-    public enum State {
+    public enum State
+    {
         OK,
         DYING,
         GAME_OVER,
@@ -53,7 +54,8 @@ public class Player : MonoBehaviour
     void Update()
     {
 
-        switch (state) {
+        switch (state)
+        {
             case State.OK:
                 CheckInput();
                 break;
@@ -63,20 +65,26 @@ public class Player : MonoBehaviour
             default:
                 break;
         }
+     
+        //CameraManager.Instance.UpdatePrimaryItem(primaryItem.tag);
+        //CameraManager.Instance.UpdateSecondaryItem(secondaryItem.tag);
     }
 
 
     //Have we moved since the last time anyone asked?
     //this means we won't be recalculating paths every darned frame - see Gremlin.cs for a caller
-    public bool DidMove() {
+    public bool DidMove()
+    {
         bool rv = moved;
         //moved = false;
         return rv;
     }
 
-    public void Zap(int damage = 1) {
+    public void Zap(int damage = 1)
+    {
         hitPoints -= damage;
-        if (hitPoints <= 0) {
+        if (hitPoints <= 0)
+        {
             hitPoints = 0;
             StartDeathSequence();
         }

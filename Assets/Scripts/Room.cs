@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class Room : MonoBehaviour
 {
-	public Vector3 cameraPosition = Vector3.zero;
-	public Vector3 cameraOrientationDegrees = Vector3.zero; 
+	public Transform cameraPosition;
 	public static Player player;
+
 	
 	//private static C mainCamTransform =Camera.main.transform;
 	
@@ -25,8 +25,8 @@ public class Room : MonoBehaviour
 		if(player == null ) 
 			player = GameObject.FindWithTag("Player").GetComponent<Player>();
 
-        CameraManager.Instance.ChangeCamera(cameraPosition);
-        Camera.main.transform.eulerAngles = cameraOrientationDegrees;
+        CameraManager.Instance.ChangeCamera(cameraPosition.position);
+        Camera.main.transform.rotation = cameraPosition.rotation;
 		player.WarpToNextRoom();
 	}
 }
