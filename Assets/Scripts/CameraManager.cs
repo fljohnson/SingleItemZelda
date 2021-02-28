@@ -80,7 +80,7 @@ public class CameraManager : MonoBehaviour
         {
             return 3;
         }
-        else if (readMe == null)
+        else if (readMe == "Null")
         {
             return 4;
         }

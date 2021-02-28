@@ -26,6 +26,7 @@ public class Player : MonoBehaviour
     public int hitPoints = 8;
     public GameObject primaryItem;
     public GameObject secondaryItem;
+    public GameObject nullObject;
     private bool canStore = false;
     private GameObject potentialPickup;
 
@@ -48,6 +49,7 @@ public class Player : MonoBehaviour
     {
         modelish = transform.Find("default");
         StartCoroutine(StepAnimation());
+        secondaryItem = nullObject;
     }
 
     // Update is called once per frame
@@ -66,8 +68,8 @@ public class Player : MonoBehaviour
                 break;
         }
      
-        //CameraManager.Instance.UpdatePrimaryItem(primaryItem.tag);
-        //CameraManager.Instance.UpdateSecondaryItem(secondaryItem.tag);
+        CameraManager.Instance.UpdatePrimaryItem(primaryItem.tag);
+        CameraManager.Instance.UpdateSecondaryItem(secondaryItem.tag);
     }
 
 
@@ -376,7 +378,7 @@ public class Player : MonoBehaviour
 
     public void ThrowOutItem()
     {
-        primaryItem = null;
+        primaryItem = nullObject;
     }
 
 

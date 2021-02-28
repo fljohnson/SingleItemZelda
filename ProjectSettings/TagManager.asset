@@ -11,6 +11,7 @@ TagManager:
   - Bridge
   - Treasure
   - EndGame
+  - Null
   layers:
   - Default
   - TransparentFX
